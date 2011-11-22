@@ -2,30 +2,36 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(OpenTickDatabase)
 
 SET(CMAKE_BUILD_TYPE Debug)
-SET(CMAKE_CXX_FLAGS "-Wall")
+SET(CMAKE_CXX_FLAGS "-g3 -fno-inline -O0 -Wall -DQS_LOG_LINE_NUMBERS")
+
+# BOOST Handling
+set(Boost_USE_STATIC_LIBS       ON)
+set(Boost_USE_MULTITHREADED     ON)
+FIND_PACKAGE(Boost REQUIRED)
+MESSAGE("Boost information:") 
+MESSAGE("  Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}") 
+MESSAGE("  Boost_LIBRARIES: ${Boost_LIBRARIES}") 
+MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}") 
 
 # QT4 Handling
-FIND_PACKAGE(Boost REQUIRED)
 FIND_PACKAGE(Qt4 REQUIRED)
 SET( QT_USE_QTSQL TRUE )
-
 INCLUDE(${QT_USE_FILE})
-
-SET( OTD_Qt4_SRC )
+SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h)
 SET( OTD_Qt4_UI )
 SET( OTD_Qt4_RES )
-
 QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
 QT4_WRAP_UI(OTD_QT_UI_CPP ${OTD_Qt4_UI})
 QT4_ADD_RESOURCES(OTD_QT_RES_H ${OTD_Qt4_RES})
 
-INCLUDE_DIRECTORIES( . )
-
+INCLUDE_DIRECTORIES( . ${Boost_INCLUDE_DIRS} )
+# Logging
+SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest.cpp )
 # General
-SET( OTD_SRC utest_main.cpp )
+SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
 SET( OTD_LIB ${QT_LIBRARIES} )
 
 ADD_EXECUTABLE(utest_main ${OTD_SRC} )
-TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} )
+TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES})
 
 INSTALL_TARGETS( /bin utest_main)
