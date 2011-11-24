@@ -1,6 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(OpenTickDatabase)
-
+    
+set (CTEST_PROJECT_NAME "OpenTickDatabase")
 SET(CMAKE_BUILD_TYPE Debug)
 SET(CMAKE_CXX_FLAGS "-g3 -fno-inline -O0 -Wall -DQS_LOG_LINE_NUMBERS")
 
@@ -28,10 +29,20 @@ INCLUDE_DIRECTORIES( . ${Boost_INCLUDE_DIRS} )
 # Logging
 SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest.cpp )
 # General
-SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
+# SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
 SET( OTD_LIB ${QT_LIBRARIES} )
 
-ADD_EXECUTABLE(utest_main ${OTD_SRC} )
-TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES})
+# Compile Unit Tests
+SET( OTD_UNIT_TESTS_DIR ./unit_tests )
+ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
+TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES} ) 
+        
+# Move Binary around
+SET( CMAKE_INSTALL_PREFIX . )     
+INSTALL ( TARGETS utest_main DESTINATION bin )
 
-INSTALL_TARGETS( /bin utest_main)
+# Add Test
+ENABLE_TESTING()
+INCLUDE(CTest)
+ADD_TEST( UTest_Runs utest_main )
+set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")

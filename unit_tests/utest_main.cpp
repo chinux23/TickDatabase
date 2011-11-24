@@ -4,7 +4,6 @@
 #include "Logging/QsLogDest.h"
 
 #define DRIVER "QSQLITE"
-#define QS_LOG_LINE_NUMBERS
 using namespace std;
 
 int main() {
