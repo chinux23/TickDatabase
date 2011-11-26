@@ -32,6 +32,9 @@ SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest
 # SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
 SET( OTD_LIB ${QT_LIBRARIES} )
 
+# compile the main library
+
+
 # Compile Unit Tests
 SET( OTD_UNIT_TESTS_DIR ./unit_tests )
 ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
