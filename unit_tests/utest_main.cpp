@@ -42,7 +42,7 @@ int main() {
                 "firstname varchar(20), "
                 "lastname varchar(30), "
                 "age integer)");
-
+        QLOG_ERROR() << db.QSqlDatabase::connectionName(); 
         if ( ret == true) QLOG_INFO() << "Query is successful" << endl;
         else QLOG_ERROR() << query.lastError();
         // query.finish()

@@ -18,7 +18,7 @@ MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 FIND_PACKAGE(Qt4 REQUIRED)
 SET( QT_USE_QTSQL TRUE )
 INCLUDE(${QT_USE_FILE})
-SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h)
+SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h ./libOTD.h )
 SET( OTD_Qt4_UI )
 SET( OTD_Qt4_RES )
 QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
@@ -33,7 +33,7 @@ SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest
 SET( OTD_LIB ${QT_LIBRARIES} )
 
 # compile the main library
-
+add_library ( OTD ./libOTD/libOTD.cpp )
 
 # Compile Unit Tests
 SET( OTD_UNIT_TESTS_DIR ./unit_tests )
