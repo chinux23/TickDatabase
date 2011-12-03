@@ -55,5 +55,6 @@ add_subdirectory ( unit_tests )
 # Add Test
 ENABLE_TESTING()
 INCLUDE(CTest)
-ADD_TEST( UTest_Runs "${PROJECT_SOURCE_DIR}/bin/utest_main" "${PROJECT_SOURCE_DIR}/bin/class_Tick_create_delete" )
+ADD_TEST( utest_main "${PROJECT_SOURCE_DIR}/bin/utest_main" )
+add_test(class_Tick_create_delete "${PROJECT_SOURCE_DIR}/bin/class_Tick_create_delete")
 #set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")
