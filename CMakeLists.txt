@@ -25,7 +25,7 @@ QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
 QT4_WRAP_UI(OTD_QT_UI_CPP ${OTD_Qt4_UI})
 QT4_ADD_RESOURCES(OTD_QT_RES_H ${OTD_Qt4_RES})
 
-INCLUDE_DIRECTORIES( . ${Boost_INCLUDE_DIRS} )
+INCLUDE_DIRECTORIES( . ${Boost_INCLUDE_DIRS} ./lib )
 # Logging
 SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest.cpp )
 # General
@@ -34,19 +34,23 @@ SET( OTD_LIB ${QT_LIBRARIES} )
 
 # compile the main library
 add_library ( OTD ./libOTD/libOTD.cpp )
+SET( OTD_LIB ${OTD_LIB} OTD )
 
 # Compile Unit Tests
 SET( OTD_UNIT_TESTS_DIR ./unit_tests )
 ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
 TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES} ) 
-        
+ADD_EXECUTABLE(class_Tick_create_delete ${OTD_UNIT_TESTS_DIR}/class_Tick_create_delete.cpp ${OTD_LOG} )
+TARGET_LINK_LIBRARIES(class_Tick_create_delete ${OTD_LIB} ${Boost_LIBRARIES} )
+
 # Move Binary around
 SET( CMAKE_INSTALL_PREFIX . )
 INSTALL ( TARGETS utest_main DESTINATION bin )
+INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
 INSTALL ( TARGETS OTD DESTINATION lib ) 
 
 # Add Test
 ENABLE_TESTING()
 INCLUDE(CTest)
-ADD_TEST( UTest_Runs utest_main )
+ADD_TEST( UTest_Runs utest_main class_Tick_create_delete )
 set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")
