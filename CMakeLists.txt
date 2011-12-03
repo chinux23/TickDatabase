@@ -18,7 +18,7 @@ MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 FIND_PACKAGE(Qt4 REQUIRED)
 SET( QT_USE_QTSQL TRUE )
 INCLUDE(${QT_USE_FILE})
-SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h ./include/libOTD.h )
+SET( OTD_Qt4_SRC "${PROJECT_SOURCE_DIR}/Logging/QsLog.h" "${PROJECT_SOURCE_DIR}/Logging/QsDebugOutput.h" "${PROJECT_SOURCE_DIR}/QsLogDest.h" "${PROJECT_SOURCE_DIR}/include/libOTD.h" )
 SET( OTD_Qt4_UI )
 SET( OTD_Qt4_RES )
 QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
@@ -27,30 +27,33 @@ QT4_ADD_RESOURCES(OTD_QT_RES_H ${OTD_Qt4_RES})
 
 INCLUDE_DIRECTORIES( . ${Boost_INCLUDE_DIRS} ./lib )
 # Logging
-SET( OTD_LOG ./Logging/QsLog.cpp ./Logging/QsDebugOutput.cpp ./Logging/QsLogDest.cpp )
+SET( OTD_LOG "${PROJECT_SOURCE_DIR}/Logging/QsLog.cpp" "${PROJECT_SOURCE_DIR}/Logging/QsDebugOutput.cpp" "${PROJECT_SOURCE_DIR}/Logging/QsLogDest.cpp" )
 # General
 # SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
-SET( OTD_LIB ${QT_LIBRARIES} )
+SET( OTD_LIB ${QT_LIBRARIES} ${Boost_LIBRARIES} )
 
 # compile the main library
-add_library ( OTD ./libOTD/libOTD.cpp )
-SET( OTD_LIB ${OTD_LIB} OTD )
+include_directories ("${PROJECT_SOURCE_DIR}/libOTD")
+add_subdirectory ( libOTD )
+# add_library ( OTD ./libOTD/libOTD.cpp )
+# SET( OTD_LIB ${OTD_LIB} OTD )
 
 # Compile Unit Tests
-SET( OTD_UNIT_TESTS_DIR ./unit_tests )
-ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
-TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES} ) 
-ADD_EXECUTABLE(class_Tick_create_delete ${OTD_UNIT_TESTS_DIR}/class_Tick_create_delete.cpp ${OTD_LOG} )
-TARGET_LINK_LIBRARIES(class_Tick_create_delete ${OTD_LIB} ${Boost_LIBRARIES} )
+#SET( OTD_UNIT_TESTS_DIR ./unit_tests )
+#ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
+#TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ) 
+#ADD_EXECUTABLE(class_Tick_create_delete ${OTD_UNIT_TESTS_DIR}/class_Tick_create_delete.cpp ${OTD_LOG} )
+#TARGET_LINK_LIBRARIES(class_Tick_create_delete OTD ${OTD_LIB} )
 
 # Move Binary around
 SET( CMAKE_INSTALL_PREFIX . )
-INSTALL ( TARGETS utest_main DESTINATION bin )
-INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
-INSTALL ( TARGETS OTD DESTINATION lib ) 
+add_subdirectory ( unit_tests ) 
+# INSTALL ( TARGETS utest_main DESTINATION bin )
+# INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
+# INSTALL ( TARGETS OTD DESTINATION lib ) 
 
 # Add Test
 ENABLE_TESTING()
 INCLUDE(CTest)
-ADD_TEST( UTest_Runs utest_main class_Tick_create_delete )
-set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")
+ADD_TEST( UTest_Runs "${PROJECT_SOURCE_DIR}/bin/utest_main" "${PROJECT_SOURCE_DIR}/bin/class_Tick_create_delete" )
+#set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")

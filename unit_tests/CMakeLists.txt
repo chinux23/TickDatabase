@@ -1,0 +1,11 @@
+ADD_EXECUTABLE(utest_main utest_main.cpp ${OTD_LOG} )
+TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} )                   
+ADD_EXECUTABLE(class_Tick_create_delete class_Tick_create_delete.cpp ${OTD_LOG} )
+TARGET_LINK_LIBRARIES(class_Tick_create_delete OTD ${OTD_LIB} )
+INSTALL ( TARGETS utest_main DESTINATION bin )
+INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
+
+# ENABLE_TESTING()
+# INCLUDE(CTest)
+# ADD_TEST( UTest_Runs utest_main class_Tick_create_delete )
+# set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")
