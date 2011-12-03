@@ -18,7 +18,7 @@ MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 FIND_PACKAGE(Qt4 REQUIRED)
 SET( QT_USE_QTSQL TRUE )
 INCLUDE(${QT_USE_FILE})
-SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h ./libOTD.h )
+SET( OTD_Qt4_SRC ./Logging/QsLog.h ./Logging/QsDebugOutput.h ./QsLogDest.h ./include/libOTD.h )
 SET( OTD_Qt4_UI )
 SET( OTD_Qt4_RES )
 QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
@@ -41,8 +41,9 @@ ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
 TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${Boost_LIBRARIES} ) 
         
 # Move Binary around
-SET( CMAKE_INSTALL_PREFIX . )     
+SET( CMAKE_INSTALL_PREFIX . )
 INSTALL ( TARGETS utest_main DESTINATION bin )
+INSTALL ( TARGETS OTD DESTINATION lib ) 
 
 # Add Test
 ENABLE_TESTING()
