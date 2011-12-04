@@ -2,11 +2,11 @@
 #include <iostream>
 #include "Logging/QsLog.h"
 #include "Logging/QsLogDest.h"
-
+#include "gtest/gtest.h"
 #define DRIVER "QSQLITE"
 using namespace std;
 
-int main() {
+TEST(unit_main, sqlite3 ){
     bool ret = false;
 
     QSqlDatabase db = QSqlDatabase::addDatabase(DRIVER);
@@ -62,6 +62,10 @@ int main() {
 
     }else{
         QLOG_DEBUG() << "Database failed to open" << endl;
-    }  
+    } 
+}
 
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
