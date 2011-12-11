@@ -3,6 +3,7 @@
 #include "Logging/QsLogDest.h"
 #include <string>
 #include "boost/date_time/posix_time/posix_time.hpp"
+#include "boost/date_time/gregorian/gregorian.hpp"
 
 #ifndef LIBOTD_H
 #define LIBOTD_H
@@ -10,6 +11,7 @@
 #define DRIVER "QSQLITE"
 namespace libOTD{
     using namespace std;
+    using namespace boost::gregorian;
     // Database is one product
     /**********************************
       class TickDatabase{
@@ -19,6 +21,13 @@ namespace libOTD{
       set<Instrument> set_of_instruments_;
       };
      **********************************/
+    
+    enum OTD_INSTRUMENT_RESPONSE{
+        OTD_SUCCESS = 0,
+        OTD_OPEN_DATABASE_ERROR = 1,
+        OTD_QUERY_EXECUTION_ERROR,
+        END_OF_OTD_INSTRUMENT_ERRO
+    };
 
     class Tick{
         public:
@@ -49,12 +58,17 @@ namespace libOTD{
             Instrument & operator= ( const Instrument & other );
             string get_instrument_id();
             string get_contract_month_();
+            int start_session ( const date & );
+            int stop_session ( );
+            bool is_session_open ();
+        
         private:
             explicit Instrument ( ){ };
             string instrument_id_;
             string contract_month_;
             string connection_name_;
             QSqlDatabase db_;
+            string session_name;
     };
 
     //TODO: add level 2 information
