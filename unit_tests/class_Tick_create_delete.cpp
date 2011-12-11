@@ -1,4 +1,4 @@
-#include "include/libOTD.h"
+#include "libOTD.h"
 #include <iostream>
 #include "gtest/gtest.h"
 

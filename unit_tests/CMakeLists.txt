@@ -1,7 +1,11 @@
-ADD_EXECUTABLE(utest_main utest_main.cpp ${OTD_LOG} )
-TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ${GTEST_LIBRARIES} )                   
-ADD_EXECUTABLE(class_Tick_create_delete class_Tick_create_delete.cpp ${OTD_LOG} )
-TARGET_LINK_LIBRARIES(class_Tick_create_delete OTD ${OTD_LIB} ${GTEST_LIBRARIES} )
+PROJECT( TEST )
+
+ADD_EXECUTABLE(utest_main utest_main.cpp )
+TARGET_LINK_LIBRARIES(utest_main ${GTEST_LIBRARIES} Logging OTD )                   
+
+ADD_EXECUTABLE(class_Tick_create_delete class_Tick_create_delete.cpp )
+TARGET_LINK_LIBRARIES(class_Tick_create_delete ${GTEST_LIBRARIES} Logging OTD )
+
 INSTALL ( TARGETS utest_main DESTINATION bin )
 INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
 
