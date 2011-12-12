@@ -23,13 +23,6 @@ MESSAGE( "  QT_INCLUDE_DIRS: ${QT_INCLUDE_DIRS}")
 MESSAGE( "  QT_LIBRARIES: ${QT_LIBRARIES}" )
 MESSAGE( "  QT_LIBRARY_DIRS: ${QT_LIBRARY_DIRS}")
 
-#SET( OTD_Qt4_SRC "${PROJECT_SOURCE_DIR}/Logging/QsLog.h" "${PROJECT_SOURCE_DIR}/Logging/QsDebugOutput.h" "${PROJECT_SOURCE_DIR}/QsLogDest.h" "${PROJECT_SOURCE_DIR}/include/libOTD.h" )
-#SET( OTD_Qt4_UI )
-#SET( OTD_Qt4_RES )
-#QT4_WRAP_CPP(OTD_QT_MOC_CPP ${OTD_Qt4_SRC})
-#QT4_WRAP_UI(OTD_QT_UI_CPP ${OTD_Qt4_UI})
-#QT4_ADD_RESOURCES(OTD_QT_RES_H ${OTD_Qt4_RES})
-
 # GTEST Handling
 find_package( GTEST REQUIRED )
 MESSAGE("GTEST information:")
@@ -38,32 +31,11 @@ MESSAGE("  GTEST_LIBRARIES: ${GTEST_LIBRARIES}")
 
 
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}" ${Boost_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/lib" "${PROJECT_SOURCE_DIR}/libOTD")
-# Logging
-# SET( OTD_LOG "${PROJECT_SOURCE_DIR}/Logging/QsLog.cpp" "${PROJECT_SOURCE_DIR}/Logging/QsDebugOutput.cpp" "${PROJECT_SOURCE_DIR}/Logging/QsLogDest.cpp" )
-# General
-# SET( OTD_SRC utest_main.cpp ${OTD_LOG} )
-# SET( OTD_LIB ${QT_LIBRARIES} ${Boost_LIBRARIES} )
-
 # compile the main library
 # build Logging static library
 add_subdirectory ( Logging )
 add_subdirectory ( libOTD )
-# add_library ( OTD ./libOTD/libOTD.cpp )
-# SET( OTD_LIB ${OTD_LIB} OTD )
-
-# Compile Unit Tests
-#SET( OTD_UNIT_TESTS_DIR ./unit_tests )
-#ADD_EXECUTABLE(utest_main ${OTD_UNIT_TESTS_DIR}/utest_main.cpp ${OTD_LOG} )
-#TARGET_LINK_LIBRARIES(utest_main ${OTD_LIB} ) 
-#ADD_EXECUTABLE(class_Tick_create_delete ${OTD_UNIT_TESTS_DIR}/class_Tick_create_delete.cpp ${OTD_LOG} )
-#TARGET_LINK_LIBRARIES(class_Tick_create_delete OTD ${OTD_LIB} )
-
-# Move Binary around
-SET( CMAKE_INSTALL_PREFIX . )
 add_subdirectory ( unit_tests ) 
-# INSTALL ( TARGETS utest_main DESTINATION bin )
-# INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
-# INSTALL ( TARGETS OTD DESTINATION lib ) 
 
 # Add Test
 ENABLE_TESTING()

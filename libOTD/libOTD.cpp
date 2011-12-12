@@ -27,12 +27,23 @@ Instrument::Instrument ( const Instrument & inst ) {
     db_.setDatabaseName( QString::fromStdString ( connection_name_ + ".db" ) );
     string session_name = "";
 }
-const Tick & Instrument::insertTick(const Tick & val){ return val; }
+const Tick & Instrument::insertTick(const Tick & val){
+    
+    return val;
+}
+
+
 bool Instrument::operator< ( const Instrument & other ) { }
 Instrument & Instrument::operator= ( const Instrument & other ) { }
 Instrument::~Instrument (){ return; }
-string Instrument::get_instrument_id(){ return this->instrument_id_; }
-string Instrument::get_contract_month_(){ return this->contract_month_; }
+
+string Instrument::get_instrument_id(){
+    return this->instrument_id_; 
+}
+
+string Instrument::get_contract_month_(){ 
+    return this->contract_month_; 
+}
 
 int Instrument::start_session(const date & today ){
     bool ret = false;
