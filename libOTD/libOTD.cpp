@@ -1,14 +1,17 @@
 #include "libOTD.h"
+#include <boost/lexical_cast.hpp>
 using namespace libOTD;
+
 // OpenInstrument{}
 
 // start of Class Tick Implementation
 Tick::Tick(double price, unsigned long volume, unsigned long ms_elapsed):price_(price),volume_(volume),time_since_start_of_the_session_(ms_elapsed){ }
-double Tick::getPrice(){ return this->price_; }
+double Tick::getPrice() const { return this->price_; }
+
 Tick & Tick::setPrice(double price ){ this->price_ = price; return *this; }
-unsigned long Tick::getVolume(){ return this->volume_; }
+unsigned long Tick::getVolume() const { return this->volume_; }
 Tick & Tick::setVolume( unsigned long volume ) { this->volume_ = volume_; return *this; }
-unsigned long Tick::get_ms_elapsed() { return this->time_since_start_of_the_session_; }
+unsigned long Tick::get_ms_elapsed() const { return this->time_since_start_of_the_session_; }
 Tick & Tick::set_ms_elapsed( unsigned long ms_elapsed ) { this->time_since_start_of_the_session_ = ms_elapsed ; return *this; } 
 // end of Class Tick Implementation
 
@@ -27,9 +30,24 @@ Instrument::Instrument ( const Instrument & inst ) {
     db_.setDatabaseName( QString::fromStdString ( connection_name_ + ".db" ) );
     string session_name = "";
 }
-const Tick & Instrument::insertTick(const Tick & val){
+OTD_INSTRUMENT_RESPONSE Instrument::insertTick(const Tick & val){
     
-    return val;
+    if ( is_session_open() ){
+        bool ret = false;
+        QSqlQuery query;
+        ret = query.exec( QString::fromStdString("insert into " + session_name + 
+                                                "(" + boost::lexical_cast<std::string>(val.getPrice()) + ", "
+                                                + boost::lexical_cast<std::string>(val.getVolume()) + ", "
+                                                + boost::lexical_cast<std::string>(val.get_ms_elapsed()) + ")"
+                                                ) );
+        
+        if ( ret == true )
+            return OTD_SUCCESS;
+        else
+            return OTD_QUERY_EXECUTION_ERROR;
+    }else{
+        return OTD_QUERY_FAIL_SESSION_NOT_OPEN;
+    }
 }
 
 
@@ -45,7 +63,7 @@ string Instrument::get_contract_month_(){
     return this->contract_month_; 
 }
 
-int Instrument::start_session(const date & today ){
+OTD_INSTRUMENT_RESPONSE Instrument::start_session(const date & today ){
     bool ret = false;
     session_name = to_iso_string ( today );
     
@@ -69,7 +87,7 @@ int Instrument::start_session(const date & today ){
     
 }
 
-int Instrument::stop_session(){
+OTD_INSTRUMENT_RESPONSE Instrument::stop_session(){
     session_name = "";
     return OTD_SUCCESS;
 }

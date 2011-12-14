@@ -26,17 +26,18 @@ namespace libOTD{
         OTD_SUCCESS = 0,
         OTD_OPEN_DATABASE_ERROR = 1,
         OTD_QUERY_EXECUTION_ERROR,
+        OTD_QUERY_FAIL_SESSION_NOT_OPEN,
         END_OF_OTD_INSTRUMENT_ERRO
     };
 
     class Tick{
         public:
             explicit Tick ( double price, unsigned long volume, unsigned long ms_elapsed );
-            double getPrice();
+            double getPrice() const ;
             Tick & setPrice( double price);
-            unsigned long getVolume();
+            unsigned long getVolume() const ;
             Tick & setVolume( unsigned long volume );
-            unsigned long get_ms_elapsed();
+            unsigned long get_ms_elapsed() const;
             Tick & set_ms_elapsed( unsigned long ms_elapsed );
         private:
             Tick (){ } ;
@@ -52,14 +53,14 @@ namespace libOTD{
         public:
             explicit Instrument ( const string & inst, const string & Contract_Month );
             explicit Instrument ( const Instrument & inst );
-            const Tick & insertTick ( const Tick & val );
+            OTD_INSTRUMENT_RESPONSE insertTick ( const Tick & val );
             bool operator< ( const Instrument & other );
             ~Instrument ();
             Instrument & operator= ( const Instrument & other );
             string get_instrument_id();
             string get_contract_month_();
-            int start_session ( const date & );
-            int stop_session ( );
+            OTD_INSTRUMENT_RESPONSE start_session ( const date & );
+            OTD_INSTRUMENT_RESPONSE stop_session ( );
             bool is_session_open ();
         
         private:
