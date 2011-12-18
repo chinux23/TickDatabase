@@ -6,8 +6,12 @@ TARGET_LINK_LIBRARIES(utest_main ${GTEST_LIBRARIES} Logging OTD )
 ADD_EXECUTABLE(class_Tick_create_delete class_Tick_create_delete.cpp )
 TARGET_LINK_LIBRARIES(class_Tick_create_delete ${GTEST_LIBRARIES} Logging OTD )
 
+ADD_EXECUTABLE(class_Instrument_create_delete class_Instrument_create_delete.cpp )
+TARGET_LINK_LIBRARIES(class_Instrument_create_delete ${GTEST_LIBRARIES} Logging OTD )
+
 INSTALL ( TARGETS utest_main DESTINATION bin )
 INSTALL ( TARGETS class_Tick_create_delete DESTINATION bin )
+INSTALL ( TARGETS class_Instrument_create_delete DESTINATION bin )
 
 
 # ENABLE_TESTING()

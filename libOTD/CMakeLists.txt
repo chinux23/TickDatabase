@@ -9,5 +9,5 @@ target_link_libraries ( ${PROJECT_NAME} Logging ${Boost_LIBRARIES} ${QT_LIBRARIE
 INSTALL ( TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib 
-        ARCHIVE DESTINATION lib/static
+        ARCHIVE DESTINATION lib
         ) 

@@ -29,7 +29,7 @@ MESSAGE("GTEST information:")
 MESSAGE("  GTEST_INCLUDE_DIRS: ${GTEST_INCLUDE_DIRS}")
 MESSAGE("  GTEST_LIBRARIES: ${GTEST_LIBRARIES}")
 
-
+SET(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}" ${Boost_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/lib" "${PROJECT_SOURCE_DIR}/libOTD")
 # compile the main library
 # build Logging static library
@@ -42,4 +42,5 @@ ENABLE_TESTING()
 INCLUDE(CTest)
 ADD_TEST( utest_main "${PROJECT_SOURCE_DIR}/bin/utest_main" )
 add_test(class_Tick_create_delete "${PROJECT_SOURCE_DIR}/bin/class_Tick_create_delete")
+add_test(class_Instrument_create_delete "${PROJECT_SOURCE_DIR}/bin/class_Tick_create_delete")
 #set_tests_properties (UTest_Runs PROPERTIES PASS_REGULAR_EXPRESSION "Chen")

@@ -34,16 +34,20 @@ OTD_INSTRUMENT_RESPONSE Instrument::insertTick(const Tick & val){
     
     if ( is_session_open() ){
         bool ret = false;
-        QSqlQuery query;
-        ret = query.exec( QString::fromStdString("insert into " + session_name + 
-                                                "(" + boost::lexical_cast<std::string>(val.getPrice()) + ", "
+        QSqlQuery query(db_);
+        QString queryString;
+        queryString = QString::fromStdString("insert into " + session_name + 
+                                                " (tick_price, volume, time_elapsed) values (" + boost::lexical_cast<std::string>(val.getPrice()) + ", "
                                                 + boost::lexical_cast<std::string>(val.getVolume()) + ", "
                                                 + boost::lexical_cast<std::string>(val.get_ms_elapsed()) + ")"
-                                                ) );
+                                                ); 
+        std::cout << queryString.toStdString() << std::endl; 
+        ret = query.exec( queryString );
         
         if ( ret == true )
             return OTD_SUCCESS;
         else
+            std::cout << query.lastError().text().toStdString()<< std::endl;
             return OTD_QUERY_EXECUTION_ERROR;
     }else{
         return OTD_QUERY_FAIL_SESSION_NOT_OPEN;
@@ -65,26 +69,38 @@ string Instrument::get_contract_month_(){
 
 OTD_INSTRUMENT_RESPONSE Instrument::start_session(const date & today ){
     bool ret = false;
-    session_name = to_iso_string ( today );
+    session_name = "corn" + to_iso_string ( today );
+    QString queryString;
     
     if ( db_.open() ){
-        QSqlQuery query;
-        ret = query.exec( QString::fromStdString( "create table " + session_name + 
-                         "(id integer primary key, "
-                         "tick_price double, "
-                         "volume UNSIGNED BIG INT, "
-                         "time_elapsed UNSIGNED BIG INT)" ) );
-        
-        if ( ret == true )
+        if ( db_.isOpen() ){
+            std::cout << "Database is open" << std::endl;
+        }
+        QSqlQuery query(db_);
+        queryString = QString::fromStdString( "create table " + session_name +
+                "(id integer primary key, "
+                "tick_price double, "
+                "volume UNSIGNED BIG INT, "
+                "time_elapsed UNSIGNED BIG INT);" );
+        std::cout << queryString.toStdString() << std::endl;
+        ret = query.exec( queryString );
+
+        if ( ret == true ){
             return OTD_SUCCESS;
+            std::cout << "Successfully executed session " << std::endl;
+        }
         else
+        {   
+            std::cout << "Query unsuccessful!" << std::endl;
+            std::cout << query.lastError().text().toStdString()<< std::endl;
             return OTD_QUERY_EXECUTION_ERROR;
-            
+        }
+
     }else{
         QLOG_DEBUG() << "Database failed to open";
         return OTD_OPEN_DATABASE_ERROR;
     }
-    
+
 }
 
 OTD_INSTRUMENT_RESPONSE Instrument::stop_session(){
@@ -94,7 +110,7 @@ OTD_INSTRUMENT_RESPONSE Instrument::stop_session(){
 
 bool Instrument::is_session_open(){
     return session_name != "";
-    
+
 }
 
 // end of Class Instrument implementation

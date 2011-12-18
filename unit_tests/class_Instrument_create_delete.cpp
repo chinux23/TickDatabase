@@ -1,4 +1,4 @@
-#include "include/libOTD.h"
+#include "libOTD.h"
 #include <iostream>
 #include "gtest/gtest.h"
 
@@ -6,7 +6,18 @@ using namespace libOTD;
 
 TEST ( InstrumentClass, CreateDelete ) {
     Instrument::Instrument * corn = new Instrument::Instrument ( "ZC", "0711"); 
-    
+    EXPECT_EQ ( false, corn->is_session_open() );
+
+    EXPECT_EQ ( OTD_SUCCESS, corn->start_session( date(2002,Jan,10) ) );
+    EXPECT_EQ ( true, corn->is_session_open() );
+
+    EXPECT_EQ ( OTD_SUCCESS, corn->insertTick( Tick::Tick(125.5, 100, 2000) ) );
+    EXPECT_EQ ( OTD_SUCCESS, corn->insertTick( Tick::Tick(125.0, 50, 3000) ) );
+    EXPECT_EQ ( OTD_SUCCESS, corn->insertTick( Tick::Tick(124.5, 50, 4500) ) );
+
+    corn->stop_session();
+    EXPECT_EQ ( false, corn->is_session_open() );
+
     delete corn;
 }
 

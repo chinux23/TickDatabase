@@ -8,4 +8,4 @@ add_library ( ${PROJECT_NAME} STATIC ${${PROJECT_NAME}_headers} ${${PROJECT_NAME
 install ( TARGETS ${PROJECT_NAME} 
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib/static)
+        ARCHIVE DESTINATION lib)
